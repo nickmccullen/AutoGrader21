@@ -38,13 +38,13 @@ class Evaluation(Ev):
             raise Exception("ExecutionError: No executable script found.")
         
         
-        self._points_received = 2
+        self._points_received = self.maxpoints
         #############################################################
         ### Run the student code and grab output as a first check ###        
         student_output = ''
         student_error = ''          
 
-        # Run the test first test
+        # Run the first test
         try:
             current_process = subprocess.run(execution_string, shell=True, bufsize=0, stdin=subprocess.PIPE, capture_output=True, close_fds=True, universal_newlines=True, preexec_fn=setsid, timeout=execution_timeout)
             
@@ -58,7 +58,7 @@ class Evaluation(Ev):
             raise
         except Exception as e:
             # Mark that the something didn't go alright
-            self._error_string = ("There was an error running the student's work: "
+            self._error_string += ("There was an error running the student's work: "
              + '\n\r' + str(e))
             self._points_received -=1
             self._clean_exit = False     
@@ -67,31 +67,22 @@ class Evaluation(Ev):
         finally: 
             try: killpg(getpgid(current_process.pid), signal.SIGKILL) # should work 
             except: subprocess.run("killall python3.8", shell=True, bufsize=0, stdin=subprocess.PIPE) # clean up anyway 
-                
-        self._output_string = student_output
-
-        self._feedback_string += (
-            'The output of your script was: \n'
-               + '\n[ Start of output ]\n'
-               + student_output
-               + '\n[ End of output ]\n')
+            
         ### END OF RUNNING STUDENT CODE ###
-        ###################################
-
-
+        ###################################            
+            
         # Add the student output to output
-        self._output_string = student_output
+        self._output_string += student_output
+        
+        # Record any error the student's code might have thrown
+        self._error_string += student_error
 
         # Add the student output to the feedback
-        self._feedback_string = (
+        self._feedback_string += (
             'The output of your script was: \n'
               + '\n[ Start of output ]\n'
               + student_output
               + '\n[ End of output ]\n')
-
-        # Record any error the student's code might have thrown
-        self._error_string = student_error
-
 
         # Check if the student missed any outputs
         for answer in ['Hello World!', '42']:
@@ -99,7 +90,7 @@ class Evaluation(Ev):
                 self._points_received -=1
 
                 # Give feedback
-                self._feedback_string = (
+                self._feedback_string += (
                       "\nCommon mistakes: "
                     + "\n\t1. Don't forget 'print()' functions around all things you want to print for it to produce outputs."
                     + "\n\t2. Watch the spelling of strings, and don't change what you were asked to print in any way (a client wouldn't like that!)"
