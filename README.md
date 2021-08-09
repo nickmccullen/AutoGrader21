@@ -1,6 +1,6 @@
 # Follow steps below to AutoGrade
 
-### Launch an executable version of this project here: https://mybinder.org/v2/gh/nickmccullen/AutoGrader21
+### Launch an executable version of this project here: https://mybinder.org/v2/gh/nickmccullen/AutoGrader21/main?urlpath=tree
 ### Run the code in the `AutoGrader-Workflow.ipynb` Notebook, alongside these steps:
 
 1. Download all submissions from moodle and upload the .zip file 
