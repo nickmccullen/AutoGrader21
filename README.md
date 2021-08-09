@@ -1,7 +1,7 @@
 # Follow steps below to AutoGrade
 
 ### Launch an executable version of this project here: https://mybinder.org/v2/gh/nickmccullen/AutoGrader21/7fceb56731ba6f3589cfab41fe6b96337ba136ca
-### Run the code in the `AutoGrader-Workflow.ipynb` Notebook
+### Run the code in the `AutoGrader-Workflow.ipynb` Notebook, alongside these steps:
 
 1. Download all submissions from moodle and upload the .zip file 
 2. Download the grading worksheet from moodle and put it in the `student-work` directory
